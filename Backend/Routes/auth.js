@@ -3,7 +3,7 @@ const router = express.Router();
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const User = require('../Models/User');
-const { protect } = require('../Middleware/auth');
+const { protect } = require('../Middleware/Auth');
 
 // Helper: generate JWT
 const generateToken = (id) =>
