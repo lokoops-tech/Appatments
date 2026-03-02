@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Gallery = require('../Models/Gallery');
-const { protect, adminOnly } = require('../Middleware/auth');
+const { protect, adminOnly } = require('../Middleware/Auth');
 
 // GET /api/gallery/featured
 router.get('/featured', async (req, res) => {
