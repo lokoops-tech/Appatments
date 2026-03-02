@@ -3,7 +3,7 @@ const router = express.Router();
 const Booking = require('../Models/Booking');
 const Apartment = require('../Models/Apartment');
 const User = require('../Models/User');
-const { protect, adminOnly } = require('../Middleware/auth');
+const { protect, adminOnly } = require('../MiddleWare/Auth');
 
 router.use(protect, adminOnly);
 
