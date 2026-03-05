@@ -94,7 +94,7 @@ const HeroSection = () => {
                   alt=""                          /* decorative — real alt on h1 */
                   className="slide__image"
                   /* First slide: eager + high priority for LCP */
-                  loading={I === 0 ? "eager" : "lazy"}
+                 {(shouldRender || I === 0) && <img ... />}
                   fetchpriority={I === 0 ? "high" : "low"}
                   decoding={I === 0 ? "sync" : "async"}
                   width="1920"
