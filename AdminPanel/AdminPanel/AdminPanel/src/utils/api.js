@@ -1,16 +1,16 @@
-const BASE_URL = import.meta.env.VITE_API_URL || 'https://spacehub-apartments.onrender.com/api';
+const BASE_URL = (import.meta.env.VITE_API_URL || 'https://backend-spacehub.onrender.com/api').replace(/\/+$/, '');
 
 const getToken = () => localStorage.getItem('admin_token');
 
 const request = async (endpoint, options = {}) => {
   const token = getToken();
   const config = {
+    ...options,
     headers: {
-      'Content-Type': 'application/json',
+      ...(options.body != null && { 'Content-Type': 'application/json' }),
       ...(token && { Authorization: `Bearer ${token}` }),
       ...options.headers,
     },
-    ...options,
   };
   const res = await fetch(`${BASE_URL}${endpoint}`, config);
   const data = await res.json();
