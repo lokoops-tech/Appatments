@@ -17,13 +17,20 @@ const allowedOrigins = [
   'http://127.0.0.1:3000',
   'http://127.0.0.1:5173',
   'https://spacehub-apartments.onrender.com',
-   'https://spacehub-apartments.onrender.com/api/apartments'
+
   // Add yo ur production domains here
   // 'https://yourdomain.com',
   // 'https://admin.yourdomain.com',
 ];
 if (process.env.EXTRA_ORIGINS) {
-  process.env.EXTRA_ORIGINS.split(',').forEach(o => allowedOrigins.push(o.trim()));
+  process.env.EXTRA_ORIGINS.split(',').forEach(o => {
+    const value = o.trim();
+    if (!value) return;
+    try {
+      const parsed = new URL(value);
+      if (['http:', 'https:'].includes(parsed.protocol) && !parsed.username && !parsed.password) allowedOrigins.push(parsed.origin);
+    } catch { console.warn('Ignoring invalid EXTRA_ORIGINS entry'); }
+  });
 }
 const corsOptions = {
   origin: (origin, callback) => {
@@ -44,9 +51,8 @@ const corsOptions = {
 };
 
 // ── Middleware ────────────────────────────────
-app.use(helmet());
 app.use(cors(corsOptions));
-app.options('', cors(corsOptions)); // handle preflight for all routes
+app.use(helmet());
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan('dev'));
