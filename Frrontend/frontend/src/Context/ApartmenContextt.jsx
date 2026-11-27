@@ -3,7 +3,7 @@ import { createContext, useContext, useState, useEffect } from 'react';
 
 const BookingContext = createContext(null);
 
-const API_BASE = import.meta.env.VITE_API_URL || 'https://backend-spacehub.onrender.com/api';
+const API_BASE = (import.meta.env.VITE_API_URL || 'https://backend-spacehub.onrender.com/api').replace(/\/+$/, '');
 
 export const BookingProvider = ({ children }) => {
   // All real apartments from the backend
@@ -18,10 +18,17 @@ export const BookingProvider = ({ children }) => {
   useEffect(() => {
     const fetchApartments = async () => {
       try {
-        const res  = await fetch(`${API_BASE}/apartments`);
-        const data = await res.json();
-        if (!res.ok || !data.success) throw new Error(data.message || 'Failed to load apartments');
-        setApartments(data.data || []);
+        const all = [];
+        const limit = 50;
+        for (let page = 1; ; page++) {
+          const res = await fetch(`${API_BASE}/apartments?page=${page}&limit=${limit}`);
+          const data = await res.json();
+          if (!res.ok || !data.success) throw new Error(data.message || 'Failed to load apartments');
+          const batch = data.data || [];
+          all.push(...batch);
+          if (!batch.length || all.length >= data.total || batch.length < limit) break;
+        }
+        setApartments(all);
       } catch (err) {
         setApartmentsError(err.message);
       } finally {

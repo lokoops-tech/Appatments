@@ -5,7 +5,7 @@ import whatsapp from '../../assets/Digital_Glyph_Green0001.svg';
 import x from '../../assets/logo-black.png';
 import './ContactUs.css';
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+const API_BASE = (import.meta.env.VITE_API_URL || 'https://backend-spacehub.onrender.com/api').replace(/\/+$/, '');
 
 const ContactUs = () => {
     const [formData, setFormData] = useState({

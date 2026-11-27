@@ -5,10 +5,11 @@
   "license": "ISC",
   "author": "",
   "type": "commonjs",
-  "main": "index.js",
+  "main": "Index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon index.js"
+    "dev": "nodemon Index.js",
+    "start": "node Index.js"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
